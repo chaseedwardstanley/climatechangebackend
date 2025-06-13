@@ -8,6 +8,13 @@ app = FastAPI()
 def root():
     return {"status": "Backend is running!"}
 
+@app.post("/update")
+async def update_object(data: dict):
+    obj_id = data["id"]
+    state = json.dumps(data["state"])
+    db.update_object_state(obj_id, state)
+    return {"status": "updated", "id": obj_id}
+
 db = ServerDatabase()
 
 # Allow Unity or other clients to talk cross-origin
