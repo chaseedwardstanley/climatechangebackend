@@ -4,6 +4,9 @@ from database import ServerDatabase
 import json
 
 app = FastAPI()
+@app.get("/")
+def root():
+    return {"status": "Backend is live!"}
 db = ServerDatabase()
 
 # Allow Unity or other clients to talk cross-origin
