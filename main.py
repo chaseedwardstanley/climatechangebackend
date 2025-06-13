@@ -15,6 +15,11 @@ async def update_object(data: dict):
     db.update_object_state(obj_id, state)
     return {"status": "updated", "id": obj_id}
 
+@app.get("/objects")
+def get_all_objects():
+    objects = db.get_all_objects()
+    return {"objects": objects}
+
 db = ServerDatabase()
 
 # Allow Unity or other clients to talk cross-origin
