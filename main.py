@@ -16,9 +16,25 @@ async def update_object(data: dict):
     return {"status": "updated", "id": obj_id}
 
 @app.get("/objects")
-def get_all_objects():
-    objects = db.get_all_objects()
-    return {"objects": objects}
+def get_all_objects(self):
+    try:
+        with self.conn.cursor() as cur:
+            cur.execute("SELECT id, type, position_x, position_y, state FROM world_objects;")
+            rows = cur.fetchall()
+            result = []
+            for row in rows:
+                result.append({
+                    "id": row[0],
+                    "type": row[1],
+                    "position_x": row[2],
+                    "position_y": row[3],
+                    "state": json.loads(row[4]) if row[4] else {}
+                })
+            return result
+    except Exception as e:
+        print(f"DB error: {e}")
+        self.conn.rollback()  # 💥 Reset broken transaction state
+        return []
 
 db = ServerDatabase()
 
