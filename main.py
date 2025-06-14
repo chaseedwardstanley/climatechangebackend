@@ -45,6 +45,11 @@ async def insert_object(data: dict):
     )
     return {"status": "inserted", "id": data["id"]}
 
+@app.post("/clear")
+async def clear_objects():
+    db.clear_all_objects()
+    return {"status": "cleared"}
+
 db = ServerDatabase()
 
 # Allow Unity or other clients to talk cross-origin

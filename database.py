@@ -42,6 +42,15 @@ class ServerDatabase:
             print("DB INSERT ERROR:", e)
             self.conn.rollback()
 
+    def clear_all_objects(self):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("DELETE FROM world_objects;")
+                self.conn.commit()
+        except Exception as e:
+            print("DB CLEAR ERROR:", e)
+            self.conn.rollback()
+
 
 
 
