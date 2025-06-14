@@ -32,6 +32,16 @@ class ServerDatabase:
         self.conn.commit()
 
     def insert_object(self, id, type, position_x, position_y, state):
-        self.cur.execute("INSERT INTO world_objects (id, type, position_x, position_y, state) VALUES (%s, %s, %s, %s, %s);", (id, type, position_x, position_y, state))
-        self.conn.commit()
+        try:
+            self.cur.execute(
+                "INSERT INTO world_objects (id, type, position_x, position_y, state) VALUES (%s, %s, %s, %s, %s);",
+                (id, type, position_x, position_y, state)
+            )
+            self.conn.commit()
+        except Exception as e:
+            print("DB INSERT ERROR:", e)
+            self.conn.rollback()
+
+
+
 
