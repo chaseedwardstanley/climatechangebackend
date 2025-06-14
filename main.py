@@ -23,6 +23,17 @@ def get_all_objects():
     except Exception as e:
         print(e)
 
+@app.post("/insert")
+async def insert_object(data: dict):
+    db.insert_object(
+        id=data["id"],
+        type=data["type"],
+        position_x=data["position_x"],
+        position_y=data["position_y"],
+        state=json.dumps(data["state"])
+    )
+    return {"status": "inserted", "id": data["id"]}
+
 db = ServerDatabase()
 
 # Allow Unity or other clients to talk cross-origin
